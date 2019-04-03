@@ -6,7 +6,7 @@
 /*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:59:06 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/03 10:23:19 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/03 12:32:09 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void				append(t_lst **head, char *content, char type);
 */
 
 int					parsing(char **av, t_ssl *ssl, t_flags *flags);
-int					parsing_stdin(t_lst *ssl);
+int					parsing_stdin(t_lst **ssl);
 
 /*
 ** FLAGS

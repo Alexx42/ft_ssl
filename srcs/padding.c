@@ -6,7 +6,7 @@
 /*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 11:10:48 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/03 12:06:43 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/03 13:04:40 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void		padding(t_md5 *md5, t_lst *lst, int new_len)
 	int		len;
 	uint32_t bit_len;
 	
-	bit_len = 8 * lst->len;
+	bit_len = lst->len * 8;
 	len =  lst->len;
 	ft_memcpy(md5->message, lst->content, lst->len);
 	md5->message[lst->len] = (char)0x80;

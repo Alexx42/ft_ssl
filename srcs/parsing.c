@@ -6,7 +6,7 @@
 /*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:52:29 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/03 09:53:03 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/03 12:53:12 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (new);
 }
 
-int			parsing_stdin(t_lst *list)
+int			parsing_stdin(t_lst **list)
 {
 	char		*str;
 	char		data[128] = {0};
@@ -42,7 +42,7 @@ int			parsing_stdin(t_lst *list)
 		i++;
 	}
 	if (str != NULL)
-		append(&list, str, 0);
+		append(list, str, 0);
 	ft_strdel(&str);
 	return (0);
 }
@@ -80,7 +80,7 @@ int			parsing(char **av, t_ssl *ssl, t_flags *flag)
 
 	i = 2 + flag->nb_flags - flag->space;
 	if (!isatty(0))
-		parsing_stdin(ssl->lst);
+		parsing_stdin(&ssl->lst);
 	while (av[i])
 	{
 		if (flag->s)
@@ -90,7 +90,6 @@ int			parsing(char **av, t_ssl *ssl, t_flags *flag)
 		}
 		else
 			append_file(&ssl->lst, av[i]);
-		
 		i++;
 	}
 	return (0);

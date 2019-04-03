@@ -6,7 +6,7 @@
 /*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 16:33:36 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/03 11:03:54 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/03 13:31:26 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,10 @@ void	main_loop(t_hash *hash, uint32_t *w, int i)
 	hash->c = hash->b;
 	hash->b = ROTATE_LEFT(hash->a + f + g_k[i] + w[g], g_r[i]) + hash->b;
 	hash->a = tmp;
+	// a : les 3 premiers
+	// b : 0
+	// c : le premier
+	// d : les 2 premiers
 }
 
 

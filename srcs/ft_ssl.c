@@ -6,7 +6,7 @@
 /*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:52:12 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/02 14:50:16 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/03 12:31:49 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		ft_ssl(char **av)
 	if (verify_cmd(ssl, av[1]))
 		wrong_command(av[1]);
 	if (!av[2] || parse_flags(flags, av) == 1)
-		parsing_stdin(ssl->lst);
+		parsing_stdin(&ssl->lst);
 	else
 		parsing(av, ssl, flags);
 	if (ssl->type == 1)

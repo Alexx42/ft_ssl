@@ -17,6 +17,7 @@ LIBRARY = libftprintf.a
 
 SRC = ft_atoi.c\
 	  get_next_line.c\
+	  swap_endian.c\
 	  ft_bzero.c\
 	  ft_isalnum.c\
 	  ft_isalpha.c\
@@ -83,6 +84,7 @@ SRC = ft_atoi.c\
 
 OBJ = ft_atoi.o\
 	  get_next_line.o\
+	  swap_endian.o\
 	  ft_bzero.o\
 	  ft_isalnum.o\
 	  ft_isalpha.o\

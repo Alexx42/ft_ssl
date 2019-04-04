@@ -6,7 +6,7 @@
 /*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/10 16:03:58 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/03/31 10:30:14 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/04 09:38:05 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
+uint32_t			swap_endian(uint32_t num);
 int					get_next_line(const int fd, char **line);
 int					ft_printf(const char *format, ...);
 char				*ft_strrev(char *str);

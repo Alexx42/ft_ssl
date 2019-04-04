@@ -6,7 +6,7 @@
 /*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:59:06 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/03 12:32:09 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/04 09:49:15 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ typedef struct		s_hash
 	uint32_t		b;
 	uint32_t		c;
 	uint32_t		d;
+	uint32_t		f;
+	uint32_t		g;
 }					t_hash;
 
 typedef struct		s_lst
@@ -108,22 +110,22 @@ void				sha256_hash(t_flags *flags, t_ssl *ssl);
 ** NON LINEAR FUNC
 */
 
-uint32_t					f_func(int b, int c, int d);
-uint32_t					g_func(int b, int c, int d);
-uint32_t					h_func(int b, int c, int d);
-uint32_t					i_func(int b, int c, int d);
+uint32_t			f_func(int b, int c, int d);
+uint32_t			g_func(int b, int c, int d);
+uint32_t			h_func(int b, int c, int d);
+uint32_t			i_func(int b, int c, int d);
 
 /*
 ** PADDING
 */
 
-void				padding(t_md5 *md5, t_lst *lst, int new_len);
+uint32_t			padding(t_md5 **md5, t_lst *lst);
 
 
 /*
 ** CUTTING BLOCKS
 */
 
-void				cut_blocks(t_md5 *md5, t_ssl *ssl, int new_len);
+void				cut_blocks(t_md5 *md5, int new_len);
 
 #endif

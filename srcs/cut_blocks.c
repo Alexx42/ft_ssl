@@ -6,32 +6,54 @@
 /*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 16:33:36 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/03 13:31:26 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/04 09:56:30 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ssl.h>
 
-uint32_t g_r[] = {7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,
-	5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20,
-	4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23,
-	6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21};
+/*
+** The values of g_r correponds to the number of shift
+** that we need to do depending on the round
+*/
 
-uint32_t g_k[64] = {
-74957514, 149892196, 224781220, 299601773, 374331064, 448946331, 523424844, 597743917,      //0-7
-671880911,745813244, 819518394, 892973912, 966157421, 1039046629, 1111629334, 1183853428,   //8-15
-1255726910, 1327217884, 1398304576, 1468965330, 1539178623, 1608923067, 1678177418, 1746920580, //16-23
-1815131612, 1882789738, 1949874349, 2016365008, 2082241463, 2147483648, 2212071687, 2275985909, //24-31
-2339206843, 2401715232, 2463492035, 2524518435, 2584775842, 2644245901, 2702910498, 2760751761, //32-39
-2817752073, 2873894071, 2929160652, 2983534983, 3037000499, 3089540917, 3141140230, 3191782721, //40-47
-3241452965, 3290135830, 3337816488, 3384480415, 3430113397, 3474701532, 3518231240, 3560689261, //48-55
-3602062661, 3642338838, 3681505523, 3719550786, 3756463038, 3792231035, 3826843881, 3860291034};//56-63
+int32_t g_r[64] = {7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17,
+	22, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 4, 11, 16, 23,
+	4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 6, 10, 15, 21, 6, 10, 15, 21,
+	6, 10, 15, 21, 6, 10, 15, 21};
+
+/*
+** The values of k corresponds to the constant of the algorithm
+** using binary integer part of the sines of integers
+*/
+
+int32_t g_k[64] = {
+	0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
+	0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
+	0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be,
+	0x6b901122, 0xfd987193, 0xa679438e, 0x49b40821,
+	0xf61e2562, 0xc040b340, 0x265e5a51, 0xe9b6c7aa,
+	0xd62f105d, 0x02441453, 0xd8a1e681, 0xe7d3fbc8,
+	0x21e1cde6, 0xc33707d6, 0xf4d50d87, 0x455a14ed,
+	0xa9e3e905, 0xfcefa3f8, 0x676f02d9, 0x8d2a4c8a,
+	0xfffa3942, 0x8771f681, 0x6d9d6122, 0xfde5380c,
+	0xa4beea44, 0x4bdecfa9, 0xf6bb4b60, 0xbebfbc70,
+	0x289b7ec6, 0xeaa127fa, 0xd4ef3085, 0x04881d05,
+	0xd9d4d039, 0xe6db99e5, 0x1fa27cf8, 0xc4ac5665,
+	0xf4292244, 0x432aff97, 0xab9423a7, 0xfc93a039,
+	0x655b59c3, 0x8f0ccc92, 0xffeff47d, 0x85845dd1,
+	0x6fa87e4f, 0xfe2ce6e0, 0xa3014314, 0x4e0811a1,
+	0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391};
+
+/*
+** Variables for the algorithm
+*/
+
+uint32_t g_h[4] = {0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476};
 
 uint32_t g_w[16] = {0};
 
-uint32_t g_h[4] = {0x67452301,0xEFCDAB89,0x98BADCFE,0x10325476};
-
-t_hash	*init_hash()
+t_hash	*init_hash(void)
 {
 	t_hash	*hash;
 
@@ -42,55 +64,47 @@ t_hash	*init_hash()
 	hash->b = g_h[1];
 	hash->c = g_h[2];
 	hash->d = g_h[3];
+	hash->f = 0;
+	hash->g = 0;
 	return (hash);
 }
 
 void	main_loop(t_hash *hash, uint32_t *w, int i)
 {
-	int		f;
-	int		g;
-	int		tmp;
-
-	if (i >= 0 && i <= 15)
+	if (i <= 15)
 	{
-		f = f_func(hash->b, hash->c, hash->d);
-		g = i;
+		hash->f = f_func(hash->b, hash->c, hash->d);
+		hash->g = i;
 	}
-	else if (i >= 16 && i <= 31)
+	else if (i <= 31)
 	{
-		f = g_func(hash->b, hash->c, hash->d);
-		g = (5 * i + 1) % 16;
+		hash->f = g_func(hash->b, hash->c, hash->d);
+		hash->g = (5 * i + 1) % 16;
 	}
-	else if (i >= 32 && i <= 47)
+	else if (i <= 47)
 	{
-		f = h_func(hash->b, hash->c, hash->d);
-		g = (3 * i + 5) % 16;
+		hash->f = h_func(hash->b, hash->c, hash->d);
+		hash->g = (3 * i + 5) % 16;
 	}
 	else
 	{
-		f = i_func(hash->b, hash->c, hash->d);
-		g = (7 * i) % 16;
+		hash->f = i_func(hash->b, hash->c, hash->d);
+		hash->g = (7 * i) % 16;
 	}
-	tmp = hash->d;
+	hash->f = hash->f + hash->a + g_k[i] + w[hash->g];
+	hash->a = hash->d;
 	hash->d = hash->c;
 	hash->c = hash->b;
-	hash->b = ROTATE_LEFT(hash->a + f + g_k[i] + w[g], g_r[i]) + hash->b;
-	hash->a = tmp;
-	// a : les 3 premiers
-	// b : 0
-	// c : le premier
-	// d : les 2 premiers
+	hash->b = hash->b + (ROTATE_LEFT(hash->f, g_r[i]));
 }
 
-
-void	cut_blocks(t_md5 *md5, t_ssl *ssl, int new_len)
+void	cut_blocks(t_md5 *md5, int new_len)
 {
-	t_hash		*hash;
-	int			offset;
-	uint32_t	*w;
-	int			i;
+	t_hash			*hash;
+	int				offset;
+	uint32_t		*w;
+	uint32_t		i;
 
-	(void)ssl;
 	offset = 0;
 	while (offset < new_len)
 	{
@@ -101,13 +115,11 @@ void	cut_blocks(t_md5 *md5, t_ssl *ssl, int new_len)
 			main_loop(hash, w, i);
 		g_h[0] += hash->a;
 		g_h[1] += hash->b;
-		g_h[2] += hash->c; 	
-		g_h[3] += hash->d; 	
+		g_h[2] += hash->c;
+		g_h[3] += hash->d;
 		offset += 64;
 	}
-	printf("%02x", g_h[0]);
-	// printf("%02x", g_h[1]);
-	// printf("%02x", g_h[2]);
-	// printf("%02x", g_h[3]);
-
+	i = -1;
+	while (++i < 4)
+		g_h[i] = swap_endian(g_h[i]);
 }

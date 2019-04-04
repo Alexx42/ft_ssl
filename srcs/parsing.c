@@ -6,37 +6,24 @@
 /*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:52:29 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/03 12:53:12 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/04 09:36:39 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ssl.h>
 
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	char	*new;
-
-	if (!s1 || !s2)
-		return (NULL);
-	new = (char*)malloc(sizeof(char) * ft_strlen(s1) + ft_strlen(s2) + 1);
-	if (new == NULL)
-		return (NULL);
-	ft_strcpy(new, s1);
-	ft_strcat(new, s2);
-	// free((void *)s2);
-	return (new);
-}
-
 int			parsing_stdin(t_lst **list)
 {
 	char		*str;
-	char		data[128] = {0};
-	int			i = 0;
+	char		data[128];
+	int			i;
+
 	str = NULL;
+	i = 0;
 	while (read(0, data, sizeof(data)) > 0)
 	{
 		if (str == NULL)
-			str  = ft_strdup(data);
+			str = ft_strdup(data);
 		else
 			str = ft_strjoin(str, data);
 		i++;

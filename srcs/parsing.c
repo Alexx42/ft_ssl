@@ -6,7 +6,7 @@
 /*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:52:29 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/04 09:36:39 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/05 10:46:50 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int			parsing_stdin(t_lst **list)
 		i++;
 	}
 	if (str != NULL)
-		append(list, str, 0);
+		append(list, str, 0, NULL);
 	ft_strdel(&str);
 	return (0);
 }
@@ -39,6 +39,7 @@ void		append_file(t_lst **lst, char *str)
 	int		fd;
 	char	*line;
 	char	*add;
+	char	*tmp;
 
 	add = NULL;
 	fd = open(str, O_RDONLY);
@@ -54,10 +55,14 @@ void		append_file(t_lst **lst, char *str)
 		if (add == NULL)
 			add = ft_strdup(line);
 		else
-			add = ft_strjoin(add, line);
+		{
+			tmp = ft_strjoin(add, line);
+			free(add);
+			add = tmp;
+		}
 		ft_strdel(&line);
 	}
-	append(lst, add, 0);
+	append(lst, add, 1, str);
 	ft_strdel(&add);
 }
 
@@ -66,13 +71,13 @@ int			parsing(char **av, t_ssl *ssl, t_flags *flag)
 	int		i;
 
 	i = 2 + flag->nb_flags - flag->space;
-	if (!isatty(0))
+	if (flag->p)
 		parsing_stdin(&ssl->lst);
 	while (av[i])
 	{
 		if (flag->s)
 		{
-			append(&ssl->lst, flag->space ? &av[i][2] : av[i], 1);
+			append(&ssl->lst, flag->space ? &av[i][2] : av[i], 0, NULL);
 			flag->s = 0;
 		}
 		else

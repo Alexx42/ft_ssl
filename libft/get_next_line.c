@@ -6,11 +6,10 @@
 /*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/18 22:14:10 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/03/31 21:05:41 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/05 10:32:45 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <printf.h>
 #include <fcntl.h>
 #include "libft.h"
 

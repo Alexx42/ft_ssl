@@ -6,11 +6,24 @@
 /*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:52:12 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/03 12:31:49 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/05 10:47:55 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ssl.h>
+
+void	free_list(t_lst *head)
+{
+	t_lst *tmp;
+
+	while (head != NULL)
+	{
+		tmp = head;
+		head = head->next;
+		free(tmp->content);
+		free(tmp);
+	}
+}
 
 int		ft_ssl(char **av)
 {
@@ -29,7 +42,9 @@ int		ft_ssl(char **av)
 		md5_hash(flags, ssl);
 	else
 		sha256_hash(flags, ssl);
-	// print_flags(flags);
+	free_list(ssl->lst);
+	free(flags);
+	free(ssl);
 	return (0);
 }
 

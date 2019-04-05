@@ -78,11 +78,13 @@ SRC = ft_atoi.c\
 	  ft_putunsigned.c\
 	  ft_puthex.c\
 	  ft_sqrt.c\
+	  swap_uint64.c\
 	  ft_putoctal.c\
 	  ft_strrev.c
 
 
 OBJ = ft_atoi.o\
+	  swap_uint64.o\
 	  get_next_line.o\
 	  swap_endian.o\
 	  ft_bzero.o\

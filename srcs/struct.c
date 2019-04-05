@@ -6,7 +6,7 @@
 /*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:52:56 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/02 14:50:21 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/05 10:46:41 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_lst		*init_lst(void)
 	return (list);
 }
 
-void		append(t_lst **head, char *content, char type)
+void		append(t_lst **head, char *content, char type, char *file_name)
 {
 	t_lst		*new_node;
 	t_lst		*last;
@@ -38,6 +38,7 @@ void		append(t_lst **head, char *content, char type)
 	new_node->content = ft_strdup(content);
 	new_node->type = type;
 	new_node->next = NULL;
+	new_node->name_file = type ? ft_strdup(file_name) : NULL;
 	new_node->len = ft_strlen(content);
 	if (!(*head))
 	{
@@ -78,29 +79,41 @@ t_flags		*init_flags(void)
 	return (flags);
 }
 
-void		print_infos(t_ssl *ssl)
+t_md5		*init_md5(int len)
 {
-	t_lst	*lst;
+	t_md5	*md5;
 
-	lst = ssl->lst;
-	printf("INFOS SSL\n");
-	if (ssl->type == 1)
-		printf("TYPE = MD5\n");
-	else
-		printf("TYPE = SHA256\n");
-	while (lst)
-	{
-		// if (lst->content != NULL)
-			printf("CONTENT = %s\n", lst->content);
-		lst = lst->next;
-	}
+	md5 = (t_md5 *)malloc(sizeof(t_md5));
+	if (md5 == NULL)
+		return (NULL);
+	md5->message = (unsigned char *)ft_strnew(len + 64);
+	md5->len_message = 0;
+	return (md5);
 }
-
-void		print_flags(t_flags *flags)
-{
-	printf("R = %d\n", flags->r);
-	printf("P = %d\n", flags->p);
-	printf("Q = %d\n", flags->q);
-	printf("S = %d\n", flags->s);
-	printf("Number of args: %d\n", flags->nb_flags);
-}
+/*
+**void		print_infos(t_ssl *ssl)
+**{
+**	t_lst	*lst;
+**
+**	lst = ssl->lst;
+**	printf("INFOS SSL\n");
+**	if (ssl->type == 1)
+**		printf("TYPE = MD5\n");
+**	else
+**		printf("TYPE = SHA256\n");
+**	while (lst)
+**	{
+**		printf("CONTENT = %s\n", lst->content);
+**		lst = lst->next;
+**	}
+**}
+**
+**void		print_flags(t_flags *flags)
+**{
+**	printf("R = %d\n", flags->r);
+**	printf("P = %d\n", flags->p);
+**	printf("Q = %d\n", flags->q);
+**	printf("S = %d\n", flags->s);
+**	printf("Number of args: %d\n", flags->nb_flags);
+**}
+*/

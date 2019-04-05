@@ -6,13 +6,13 @@
 /*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/13 15:30:09 by ale-goff          #+#    #+#             */
-/*   Updated: 2018/09/14 19:23:59 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/04 10:44:07 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libft.h>
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin_pf(char const *s1, char const *s2)
 {
 	char	*new;
 	int		i;

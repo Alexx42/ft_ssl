@@ -6,7 +6,7 @@
 /*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 10:23:59 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/05 10:44:54 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/05 13:14:16 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,19 +65,22 @@ void				print_func_sha(t_lst *lst, t_hash256 *hash, t_flags *flags)
 {
 	if (flags->q == 0 && flags->p == 0)
 	{
-		ft_printf("SHA256 (\"%s\") = ", lst->content);
+		if (lst->name_file)
+			ft_printf("SHA256 (\"%s\") = ", lst->name_file);
+		else
+			ft_printf("SHA256 (\"%s\") = ", lst->content);
 		print_sha(hash);
 	}
 	else if (flags->p)
 	{
-		ft_printf("%s", lst->content);
+		ft_printf("%s", lst->content ? lst->content : lst->name_file);
 		print_sha(hash);
 		flags->p = 0;
 	}
 	else if (flags->r)
 	{
 		print_sha(hash);
-		ft_printf(" %s\n", lst->content);
+		ft_printf("%s", lst->content ? lst->content : lst->name_file);
 	}
 	else
 		print_sha(hash);

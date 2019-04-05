@@ -6,7 +6,7 @@
 /*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:52:21 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/03/31 19:54:16 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/05 11:58:29 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,16 @@ void		error_flags(char *str)
 	ft_putendl("-q, quiet mode");
 	ft_putendl("-r, reverse the format of the output.");
 	ft_putendl("-s, print the sum of the given string");
+}
+
+int			error_file(int fd, char *str)
+{
+	if (fd < 0)
+	{
+		ft_putstr("ft_ssl: ");
+		ft_putstr(str);
+		ft_putendl(": No such file or directory");
+		return (1);
+	}
+	return (0);
 }

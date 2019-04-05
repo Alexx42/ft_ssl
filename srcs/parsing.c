@@ -6,27 +6,33 @@
 /*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:52:29 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/05 10:46:50 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/05 12:11:33 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_ssl.h>
 
+char		*join_leak(char *add, char *data)
+{
+	char		*tmp;
+
+	tmp = ft_strjoin(add, data);
+	free(add);
+	return (tmp);
+}
+
 int			parsing_stdin(t_lst **list)
 {
 	char		*str;
-	char		data[128];
-	int			i;
+	char		data[1000];
 
 	str = NULL;
-	i = 0;
 	while (read(0, data, sizeof(data)) > 0)
 	{
 		if (str == NULL)
 			str = ft_strdup(data);
 		else
 			str = ft_strjoin(str, data);
-		i++;
 	}
 	if (str != NULL)
 		append(list, str, 0, NULL);
@@ -37,31 +43,25 @@ int			parsing_stdin(t_lst **list)
 void		append_file(t_lst **lst, char *str)
 {
 	int		fd;
-	char	*line;
+	char	*data;
 	char	*add;
-	char	*tmp;
+	int		len;
 
 	add = NULL;
+	data = (char *)ft_strnew(10000 + 1);
 	fd = open(str, O_RDONLY);
-	if (fd < 0)
-	{
-		ft_putstr("ft_ssl: ");
-		ft_putstr(str);
-		ft_putendl(": No such file or directory");
+	if (error_file(fd, str))
 		return ;
-	}
-	while (get_next_line(fd, &line))
+	while ((len = read(fd, data, sizeof(data))) > 0)
 	{
 		if (add == NULL)
-			add = ft_strdup(line);
+			add = ft_strdup(data);
 		else
-		{
-			tmp = ft_strjoin(add, line);
-			free(add);
-			add = tmp;
-		}
-		ft_strdel(&line);
+			add = join_leak(add, data);
+		ft_bzero(data, len);
+		len = 0;
 	}
+	close(fd);
 	append(lst, add, 1, str);
 	ft_strdel(&add);
 }

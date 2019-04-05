@@ -6,7 +6,7 @@
 /*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:52:35 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/04 17:12:52 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/05 13:41:54 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 ** that we need to do depending on the round
 */
 
-int32_t g_r[64] = {7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17,
+uint32_t g_r[64] = {7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17,
 	22, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 4, 11, 16, 23,
 	4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 6, 10, 15, 21, 6, 10, 15, 21,
 	6, 10, 15, 21, 6, 10, 15, 21};
@@ -60,21 +60,21 @@ uint32_t g_w[16] = {0};
 **  PREPARATION OF THE MESSAGE
 */
 
-uint32_t		padding(t_md5 **md5, char *content, int len_content)
+size_t		padding(t_md5 **md5, char *content, int len_content)
 {
-	uint32_t		new_len;
-	uint32_t		len;
+	size_t			new_len;
+	size_t			len;
 	uint32_t		bit_len;
 
-	new_len = len_content * 8 + 1;
-	while (new_len % 512 != 448)
+	new_len = len_content + 1;
+	while (new_len % 64 != 56)
 		new_len++;
-	new_len /= 8;
 	bit_len = len_content * 8;
 	len = len_content;
 	*md5 = init_md5(new_len);
 	ft_memcpy((*md5)->message, content, len_content);
-	(*md5)->message[len_content] = (char)0x80;
+	(*md5)->message[len_content] = 128;
+	printf("%zu\n", len);
 	while (++len <= new_len)
 		(*md5)->message[len] = 0;
 	ft_memcpy((*md5)->message + new_len, &bit_len, 4);
@@ -87,16 +87,10 @@ uint32_t		padding(t_md5 **md5, char *content, int len_content)
 
 void			init_hash(t_hash *hash)
 {
-	hash->h0 = 0x67452301;
-	hash->h1 = 0xEFCDAB89;
-	hash->h2 = 0x98BADCFE;
-	hash->h3 = 0x10325476;
 	hash->a = hash->h0;
 	hash->b = hash->h1;
 	hash->c = hash->h2;
 	hash->d = hash->h3;
-	hash->f = 0;
-	hash->g = 0;
 }
 
 void			main_loop(t_hash **hash, uint32_t *w, int i)
@@ -132,9 +126,13 @@ void			cut_blocks(t_md5 *md5, t_hash **hash, int new_len)
 {
 	int				offset;
 	uint32_t		*w;
-	uint32_t		i;
+	int				i;
 
 	offset = 0;
+	(*hash)->h0 = 0x67452301;
+	(*hash)->h1 = 0xEFCDAB89;
+	(*hash)->h2 = 0x98BADCFE;
+	(*hash)->h3 = 0x10325476;
 	while (offset < new_len)
 	{
 		w = (uint32_t*)(md5->message + offset);

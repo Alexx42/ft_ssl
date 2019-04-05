@@ -6,7 +6,7 @@
 /*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:52:39 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/04 17:18:17 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/05 13:42:38 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,14 @@ void			cut_blocks256(t_sha256 *sha256, t_hash256 **hash256, int newlen)
 
 	offset = 0;
 	w = NULL;
+	(*hash256)->h0 = 0x6A09E667;
+	(*hash256)->h1 = 0xbb67ae85;
+	(*hash256)->h2 = 0x3c6ef372;
+	(*hash256)->h3 = 0xa54ff53a;
+	(*hash256)->h4 = 0x510e527f;
+	(*hash256)->h5 = 0x9b05688c;
+	(*hash256)->h6 = 0x1f83d9ab;
+	(*hash256)->h7 = 0x5be0cd19;
 	while (offset < (size_t)newlen)
 	{
 		w = get_w(sha256->message + offset);

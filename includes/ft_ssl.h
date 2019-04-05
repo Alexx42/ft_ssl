@@ -6,7 +6,7 @@
 /*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:59:06 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/05 10:45:37 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/05 11:58:40 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ void				wrong_command(char *str);
 void				usage(void);
 int					verify_cmd(t_ssl *ssl, char *cmd);
 void				error_flags(char *str);
+int					error_file(int fd, char *str);
 
 /*
 ** STRUCT

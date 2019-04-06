@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ssl.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Alex <Alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:52:12 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/05 10:51:56 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/05 16:54:00 by Alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int		ft_ssl(char **av)
 		md5_hash(flags, ssl);
 	else
 		sha256_hash(flags, ssl);
+	// print_flags(flags);
 	free_list(ssl->lst);
 	free(flags);
 	free(ssl);

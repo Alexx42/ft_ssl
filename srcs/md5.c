@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   md5.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Alex <Alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:52:35 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/05 13:41:54 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/05 18:49:06 by Alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ size_t		padding(t_md5 **md5, char *content, int len_content)
 	*md5 = init_md5(new_len);
 	ft_memcpy((*md5)->message, content, len_content);
 	(*md5)->message[len_content] = 128;
-	printf("%zu\n", len);
 	while (++len <= new_len)
 		(*md5)->message[len] = 0;
 	ft_memcpy((*md5)->message + new_len, &bit_len, 4);
@@ -133,6 +132,8 @@ void			cut_blocks(t_md5 *md5, t_hash **hash, int new_len)
 	(*hash)->h1 = 0xEFCDAB89;
 	(*hash)->h2 = 0x98BADCFE;
 	(*hash)->h3 = 0x10325476;
+	(*hash)->f = 0;
+	(*hash)->g = 0;
 	while (offset < new_len)
 	{
 		w = (uint32_t*)(md5->message + offset);

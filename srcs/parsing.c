@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Alex <Alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:52:29 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/05 12:11:33 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/05 18:06:40 by Alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,16 @@ int			parsing(char **av, t_ssl *ssl, t_flags *flag)
 {
 	int		i;
 
-	i = 2 + flag->nb_flags - flag->space;
 	if (flag->p)
 		parsing_stdin(&ssl->lst);
+	i = 2;
 	while (av[i])
 	{
-		if (flag->s)
+		if (av[i][0] == '-' && flag->space == 0 && flag->space == 0)
+		{
+			;
+		}
+		else if (flag->s)
 		{
 			append(&ssl->lst, flag->space ? &av[i][2] : av[i], 0, NULL);
 			flag->s = 0;

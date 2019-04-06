@@ -6,7 +6,7 @@
 /*   By: Alex <Alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 10:23:59 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/05 17:09:15 by Alex             ###   ########.fr       */
+/*   Updated: 2019/04/05 19:43:29 by Alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,32 +21,38 @@ void				swap_print_md5(t_hash *hash)
 	ft_printf("%08x", hash->h0);
 	ft_printf("%08x", hash->h1);
 	ft_printf("%08x", hash->h2);
-	ft_printf("%08x\n", hash->h3);
+	ft_printf("%08x", hash->h3);
 }
 
 void				print_func(t_lst *lst, t_hash *hash, t_flags *flags)
 {
-	if (flags->q == 0 && flags->p == 0)
+	if (flags->r)
+	{
+		swap_print_md5(hash);
+		ft_printf(" %s\n", lst->content ? lst->content : lst->name_file);
+	}
+	else if (flags->q == 0 && flags->p == 0)
 	{
 		if (lst->name_file)
 			ft_printf("MD5 (\"%s\") = ", lst->name_file);
 		else
 			ft_printf("MD5 (\"%s\") = ", lst->content);
 		swap_print_md5(hash);
+		printf("\n");
 	}
 	else if (flags->p)
 	{
 		ft_printf("%s", lst->content ? lst->content : lst->name_file);
 		swap_print_md5(hash);
 		flags->p = 0;
-	}
-	else if (flags->r)
-	{
-		swap_print_md5(hash);
-		ft_printf(" %s\n", lst->content ? lst->content : lst->name_file);
+		printf("\n");
+
 	}
 	else
+	{
 		swap_print_md5(hash);
+		printf("\n");
+	}
 }
 
 void				print_sha(t_hash256 *hash256)

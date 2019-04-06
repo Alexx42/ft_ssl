@@ -6,7 +6,7 @@
 /*   By: Alex <Alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:52:35 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/05 18:49:06 by Alex             ###   ########.fr       */
+/*   Updated: 2019/04/05 19:39:30 by Alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,8 +132,6 @@ void			cut_blocks(t_md5 *md5, t_hash **hash, int new_len)
 	(*hash)->h1 = 0xEFCDAB89;
 	(*hash)->h2 = 0x98BADCFE;
 	(*hash)->h3 = 0x10325476;
-	(*hash)->f = 0;
-	(*hash)->g = 0;
 	while (offset < new_len)
 	{
 		w = (uint32_t*)(md5->message + offset);

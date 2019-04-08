@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Alex <Alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 10:23:59 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/07 10:19:54 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/08 14:09:26 by Alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void				print_func(t_lst *lst, t_hash *hash, t_hash256 *hash256,
 	t_flags		*flags;
 
 	flags = lst->flags;
-	if (is_flags_activated(flags, lst))
+	if (is_flags_activated(flags, lst) && lst->name_file == NULL)
 		ssl->type == 0 ? swap_print_md5(hash, 1) : print_sha(hash256, 1);
 	else if (flags->p)
 	{
@@ -97,6 +97,6 @@ void				print_func(t_lst *lst, t_hash *hash, t_hash256 *hash256,
 		else
 			ft_printf(" %s\n", lst->content);
 	}
-	else if (lst->is_string)
+	else if (lst->is_string || lst->name_file != NULL)
 		no_flag(lst, hash, hash256, ssl);
 }

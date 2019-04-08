@@ -6,7 +6,7 @@
 /*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:59:06 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/05 11:58:40 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/07 10:21:05 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,23 @@ typedef struct		s_hash256
 	unsigned int		h;
 }					t_hash256;
 
+typedef struct		s_flags
+{
+	char			p;
+	char			q;
+	char			r;
+	char			s;
+	char			space;
+	char			stop;
+}					t_flags;
+
 typedef struct		s_lst
 {
 	char			*content;
-	char			type;
 	size_t			len;
 	char			*name_file;
+	t_flags			*flags;
+	char			is_string;
 	struct s_lst	*next;
 }					t_lst;
 
@@ -69,16 +80,6 @@ typedef struct		s_ssl
 	char			type;
 	char			file;
 }					t_ssl;
-
-typedef struct		s_flags
-{
-	char			p;
-	char			q;
-	char			r;
-	char			s;
-	char			nb_flags;
-	char			space;
-}					t_flags;
 
 typedef struct		s_md5
 {
@@ -91,6 +92,8 @@ typedef struct		s_sha256
 	unsigned char	*message;
 	size_t			len_message;
 }					t_sha256;
+
+typedef void		(*t_hashing)(t_ssl *ssl);
 
 /*
 ** ERROR
@@ -107,7 +110,9 @@ int					error_file(int fd, char *str);
 */
 
 t_ssl				*init_ssl(void);
-void				append(t_lst **head, char *content, char type, char *name_file);
+void				append(t_lst **head, char *content, char *file_name,
+					t_flags *flags);
+void				append_file(t_lst **lst, char *str, t_flags *flags);
 t_md5				*init_md5(int len);
 void				init_hash256(t_hash256 *hash256);
 t_sha256			*init_sha(int len);
@@ -116,15 +121,15 @@ t_sha256			*init_sha(int len);
 ** PARSING
 */
 
-int					parsing(char **av, t_ssl *ssl, t_flags *flags);
-int					parsing_stdin(t_lst **ssl);
+int					parsing(int ac, char **av, t_ssl *ssl);
+int					parsing_stdin(t_lst **list, t_flags *flags);
 
 /*
 ** FLAGS
 */
 
 t_flags				*init_flags();
-int					parse_flags(t_flags *flags, char **av);
+void				parse_flags(t_flags *flags, t_lst **lst, char **av);
 
 /*
 ** PRINTING FUNC
@@ -137,14 +142,16 @@ void				print_flags(t_flags *flags);
 ** ALGO
 */
 
-void				md5_hash(t_flags *flags, t_ssl *ssl);
-void				sha256_hash(t_flags *flags, t_ssl *ssl);
+void				md5_hash(t_ssl *ssl);
+void				sha256_hash(t_ssl *ssl);
 
 /*
 ** PRINTING FUNCTIONS
 */
 
-void				print_func(t_lst *lst, t_hash *hash, t_flags *flags);
-void				print_func_sha(t_lst *lst, t_hash256 *hash, t_flags *flags);
+void				print_func(t_lst *lst, t_hash *hash, t_hash256 *hash256,
+					t_ssl *ssl);
+void				print_sha(t_hash256 *hash256, int status);
+void				swap_print_md5(t_hash *hash, int status);
 
 #endif

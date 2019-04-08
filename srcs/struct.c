@@ -12,21 +12,35 @@
 
 #include <ft_ssl.h>
 
-t_lst		*init_lst(void)
+t_flags		*init_flags(void)
 {
-	t_lst		*list;
+	t_flags		*flags;
 
-	list = (t_lst*)ft_memalloc(sizeof(t_lst));
-	if (list == NULL)
+	flags = (t_flags*)ft_memalloc(sizeof(t_flags));
+	if (flags == NULL)
 		return (NULL);
-	list->content = NULL;
-	list->type = 0;
-	list->next = NULL;
-	list->len = 0;
-	return (list);
+	flags->r = 0;
+	flags->p = 0;
+	flags->q = 0;
+	flags->s = 0;
+	flags->space = 0;
+	flags->stop = 0;
+	return (flags);
 }
 
-void		append(t_lst **head, char *content, char type, char *file_name)
+t_flags		*duplicate_flags(t_flags *cpy)
+{
+	t_flags		*flags;
+
+	flags = (t_flags*)malloc(sizeof(t_flags));
+	flags->p = cpy->p;
+	flags->q = cpy->q;
+	flags->r = cpy->r;
+	flags->s = cpy->r;
+	return (flags);
+}
+
+void		append(t_lst **head, char *content, char *file_name, t_flags *flags)
 {
 	t_lst		*new_node;
 	t_lst		*last;
@@ -36,10 +50,16 @@ void		append(t_lst **head, char *content, char type, char *file_name)
 	if (new_node == NULL)
 		return ;
 	new_node->content = ft_strdup(content);
-	new_node->type = type;
 	new_node->next = NULL;
-	new_node->name_file = type ? ft_strdup(file_name) : NULL;
+	new_node->name_file = file_name ? ft_strdup(file_name) : NULL;
 	new_node->len = ft_strlen(content);
+	new_node->flags = duplicate_flags(flags);
+	new_node->is_string = 0;
+	if (flags->s)
+	{
+		new_node->is_string = 1;
+		flags->s = 0;
+	}
 	if (!(*head))
 	{
 		(*head) = new_node;
@@ -63,22 +83,6 @@ t_ssl		*init_ssl(void)
 	return (ssl);
 }
 
-t_flags		*init_flags(void)
-{
-	t_flags		*flags;
-
-	flags = (t_flags*)malloc(sizeof(t_flags));
-	if (flags == NULL)
-		return (NULL);
-	flags->r = 0;
-	flags->p = 0;
-	flags->q = 0;
-	flags->s = 0;
-	flags->space = 0;
-	flags->nb_flags = 0;
-	return (flags);
-}
-
 t_md5		*init_md5(int len)
 {
 	t_md5	*md5;
@@ -91,33 +95,25 @@ t_md5		*init_md5(int len)
 	return (md5);
 }
 
-/*
-**void		print_infos(t_ssl *ssl)
-**{
-**	t_lst	*lst;
-**
-**	lst = ssl->lst;
-**	printf("INFOS SSL\n");
-**	if (ssl->type == 1)
-**		printf("TYPE = MD5\n");
-**	else
-**		printf("TYPE = SHA256\n");
-**	while (lst)
-**	{
-**		printf("CONTENT = %s\n", lst->content);
-**		lst = lst->next;
-**	}
-**}
-**
-**void		print_flags(t_flags *flags)
-**{
-**	printf("R = %d\n", flags->r);
-**	printf("P = %d\n", flags->p);
-**	printf("Q = %d\n", flags->q);
-**	printf("S = %d\n", flags->s);
-**	printf("Number of args: %d\n", flags->nb_flags);
-**}
-*/
+
+void		print_infos(t_ssl *ssl)
+{
+	t_lst	*lst;
+
+	lst = ssl->lst;
+	printf("INFOS SSL\n");
+	if (ssl->type == 1)
+		printf("TYPE = MD5\n");
+	else
+		printf("TYPE = SHA256\n");
+	while (lst)
+	{
+		printf("CONTENT = %s\n", lst->content);
+		printf("IS_STRING = %d\n", lst->is_string);
+		print_flags(lst->flags);
+		lst = lst->next;
+	}
+}
 
 void		print_flags(t_flags *flags)
 {
@@ -125,5 +121,5 @@ void		print_flags(t_flags *flags)
 	printf("P = %d\n", flags->p);
 	printf("Q = %d\n", flags->q);
 	printf("S = %d\n", flags->s);
-	printf("Number of args: %d\n", flags->nb_flags);
+
 }

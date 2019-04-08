@@ -12,6 +12,8 @@
 
 #include <ft_ssl.h>
 
+t_hashing	g_hash[] = {md5_hash, sha256_hash};
+
 void	free_list(t_lst *head)
 {
 	t_lst *tmp;
@@ -20,32 +22,25 @@ void	free_list(t_lst *head)
 	{
 		tmp = head;
 		head = head->next;
-		free(tmp->content);
+		if (tmp->content)
+			free(tmp->content);
 		if (tmp->name_file)
 			free(tmp->name_file);
 		free(tmp);
 	}
 }
 
-int		ft_ssl(char **av)
+
+int		ft_ssl(char **av, int ac)
 {
 	t_ssl		*ssl;
-	t_flags		*flags;
 
 	ssl = init_ssl();
-	flags = init_flags();
 	if (verify_cmd(ssl, av[1]))
 		wrong_command(av[1]);
-	if (!av[2] || parse_flags(flags, av) == 1)
-		parsing_stdin(&ssl->lst);
-	else
-		parsing(av, ssl, flags);
-	if (ssl->type == 1)
-		md5_hash(flags, ssl);
-	else
-		sha256_hash(flags, ssl);
+	parsing(ac, av, ssl);
+	g_hash[(int)ssl->type](ssl);
 	free_list(ssl->lst);
-	free(flags);
 	free(ssl);
 	return (0);
 }
@@ -55,6 +50,6 @@ int		main(int ac, char **av)
 	if (ac == 1)
 		usage();
 	else
-		ft_ssl(av);
+		ft_ssl(av, ac);
 	return (0);
 }

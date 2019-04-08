@@ -8,7 +8,6 @@ PRINTF_PATH = ft_printf/
 INCLUDES = -I includes/ -I ./libft
 CC = gcc
 FLAGS = -Wall -Werror -Wextra -g -fsanitize=address
-
 all: $(NAME)
 
 %.o: %.c
@@ -26,5 +25,3 @@ fclean: clean
 	rm -f $(NAME) && make fclean -C $(LIBFT_PATH) && make fclean -C $(PRINTF_PATH)
 
 re: fclean all
-
-

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   md5.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Alex <Alex@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:52:35 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/05 19:39:30 by Alex             ###   ########.fr       */
+/*   Updated: 2019/04/05 21:18:58 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ uint32_t g_w[16] = {0};
 **  PREPARATION OF THE MESSAGE
 */
 
-size_t		padding(t_md5 **md5, char *content, int len_content)
+size_t			padding(t_md5 **md5, char *content, int len_content)
 {
 	size_t			new_len;
 	size_t			len;
@@ -147,7 +147,7 @@ void			cut_blocks(t_md5 *md5, t_hash **hash, int new_len)
 	}
 }
 
-void			md5_hash(t_flags *flags, t_ssl *ssl)
+void			md5_hash(t_ssl *ssl)
 {
 	t_md5		*md5;
 	t_lst		*lst;
@@ -160,7 +160,7 @@ void			md5_hash(t_flags *flags, t_ssl *ssl)
 	{
 		new_len = padding(&md5, lst->content, lst->len);
 		cut_blocks(md5, &hash, new_len);
-		print_func(lst, hash, flags);
+		print_func(lst, hash, NULL, ssl);
 		free(md5->message);
 		free(md5);
 		lst = lst->next;

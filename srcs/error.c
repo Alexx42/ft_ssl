@@ -16,12 +16,12 @@ int			verify_cmd(t_ssl *ssl, char *cmd)
 {
 	if (!ft_strcmp(cmd, "md5"))
 	{
-		ssl->type = 1;
+		ssl->type = 0;
 		return (0);
 	}
 	else if (!ft_strcmp(cmd, "sha256"))
 	{
-		ssl->type = 2;
+		ssl->type = 1;
 		return (0);
 	}
 	return (1);

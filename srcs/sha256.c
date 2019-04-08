@@ -112,14 +112,6 @@ void			cut_blocks256(t_sha256 *sha256, t_hash256 **hash256, int newlen)
 
 	offset = 0;
 	w = NULL;
-	(*hash256)->h0 = 0x6A09E667;
-	(*hash256)->h1 = 0xbb67ae85;
-	(*hash256)->h2 = 0x3c6ef372;
-	(*hash256)->h3 = 0xa54ff53a;
-	(*hash256)->h4 = 0x510e527f;
-	(*hash256)->h5 = 0x9b05688c;
-	(*hash256)->h6 = 0x1f83d9ab;
-	(*hash256)->h7 = 0x5be0cd19;
 	while (offset < (size_t)newlen)
 	{
 		w = get_w(sha256->message + offset);
@@ -140,7 +132,7 @@ void			cut_blocks256(t_sha256 *sha256, t_hash256 **hash256, int newlen)
 	free(w);
 }
 
-void			sha256_hash(t_flags *flags, t_ssl *ssl)
+void			sha256_hash(t_ssl *ssl)
 {
 	t_lst		*lst;
 	size_t		newlen;
@@ -149,13 +141,19 @@ void			sha256_hash(t_flags *flags, t_ssl *ssl)
 
 	lst = ssl->lst;
 	hash256 = (t_hash256 *)malloc(sizeof(t_hash256));
-	if (hash256 == NULL)
-		return ;
 	while (lst)
 	{
 		newlen = padding_sha256(&sha256, lst->content, lst->len);
+		(hash256)->h0 = 0x6A09E667;
+		(hash256)->h1 = 0xbb67ae85;
+		(hash256)->h2 = 0x3c6ef372;
+		(hash256)->h3 = 0xa54ff53a;
+		(hash256)->h4 = 0x510e527f;
+		(hash256)->h5 = 0x9b05688c;
+		(hash256)->h6 = 0x1f83d9ab;
+		(hash256)->h7 = 0x5be0cd19;
 		cut_blocks256(sha256, &hash256, newlen);
-		print_func_sha(lst, hash256, flags);
+		print_func(lst, NULL, hash256, ssl);
 		free(sha256->message);
 		free(sha256);
 		lst = lst->next;

@@ -31,26 +31,26 @@ int				parse_string(t_lst **lst, char **str, t_flags *flags, int i)
 	return (i);
 }
 
-void			parse_flags2(t_flags *flags, char **str, int i, t_lst **lst)
+void			parse_flags2(t_flags *flags, char **str, int *i, t_lst **lst)
 {
 	int		j;
 
 	j = -1;
-	while (str[i][++j])
+	while (str[*i][++j])
 	{
-		if (str[i][j] == 's')
+		if (str[*i][j] == 's')
 		{
-			i = parse_string(lst, str, flags, i);
+			*i = parse_string(lst, str, flags, *i);
 			break ;
 		}
-		if (str[i][j] == 'p')
+		if (str[*i][j] == 'p')
 		{
 			(flags)->p = 1;
 			parsing_stdin(lst, flags);
 			flags->p = 0;
 		}
-		str[i][j] == 'q' ? flags->q = 1 : 0;
-		str[i][j] == 'r' ? flags->r = 1 : 0;
+		str[*i][j] == 'q' ? flags->q = 1 : 0;
+		str[*i][j] == 'r' ? flags->r = 1 : 0;
 	}
 }
 
@@ -63,7 +63,7 @@ void			parse_flags(t_flags *flags, t_lst **lst, char **str)
 	{
 		if (str[i][0] == '-' && !flags->stop)
 		{
-			parse_flags2(flags, str, i, lst);
+			parse_flags2(flags, str, &i, lst);
 		}
 		else
 		{

@@ -6,7 +6,7 @@
 /*   By: Alex <Alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:52:49 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/08 14:05:24 by Alex             ###   ########.fr       */
+/*   Updated: 2019/04/08 17:13:13 by Alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ void 			error_sflags()
 
 int 			parse_string(t_lst **lst, char **str, t_flags *flags, int i)
 {
-	(void)lst;
-	(void)flags;
 	if (!str[i + 1])
 		error_sflags();
 	else
@@ -57,6 +55,7 @@ void			parse_flags(t_flags *flags, t_lst **lst, char **str)
 					print_flags(flags);
 					(flags)->p = 1;
 					parsing_stdin(lst, flags);
+					flags->p = 0;
 				}
 				if (str[i][j] == 'q')
 					flags->q = 1;

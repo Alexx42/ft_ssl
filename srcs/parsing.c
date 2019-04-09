@@ -6,7 +6,7 @@
 /*   By: Alex <Alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:52:29 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/08 14:05:54 by Alex             ###   ########.fr       */
+/*   Updated: 2019/04/08 17:06:30 by Alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,27 @@ void		append_file(t_lst **lst, char *str, t_flags *flags)
 	ft_strdel(&add);
 }
 
+int			op_only(char **av, t_flags **flags)
+{
+	int i;
+	
+	i = 2;
+	while (av[i])
+	{
+		if (av[i][0] == '-' && av[i][1] == 's' && !av[i + 1])
+		{
+			ft_printf("ft_ssl : -s : need an argument\n");
+			exit (1);
+		}
+		if (av[i][0] == '-' && av[i][1] == 'p')
+			(*flags)->p = 1;
+		if (av[i][0] != '-')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int			parsing(int ac, char **av, t_ssl *ssl)
 {
 	int		i;
@@ -79,7 +100,7 @@ int			parsing(int ac, char **av, t_ssl *ssl)
 
 	i = 1;
 	flags = init_flags();
-	if (ac == 2)
+	if (ac == 2 || op_only(av, &flags))
 		parsing_stdin(&ssl->lst, flags);
 	else
 	{

@@ -6,7 +6,7 @@
 /*   By: Alex <Alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 10:23:59 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/08 14:09:26 by Alex             ###   ########.fr       */
+/*   Updated: 2019/04/08 17:14:54 by Alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void				print_func(t_lst *lst, t_hash *hash, t_hash256 *hash256,
 		if (lst->name_file)
 			ft_printf(" %s\n", lst->name_file);
 		else
-			ft_printf(" %s\n", lst->content);
+			ft_printf(" \"%s\"\n", lst->content);
 	}
 	else if (lst->is_string || lst->name_file != NULL)
 		no_flag(lst, hash, hash256, ssl);

@@ -7,7 +7,7 @@ PRINTF = ft_printf/libftprintf.a
 PRINTF_PATH = ft_printf/
 INCLUDES = -I includes/ -I ./libft
 CC = gcc
-FLAGS = -Wall -Werror -Wextra -g -fsanitize=address
+FLAGS = -Wall -Werror -Wextra
 all: $(NAME)
 
 %.o: %.c

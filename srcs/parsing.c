@@ -37,9 +37,10 @@ int			parsing_stdin(t_lst **list, t_flags *flags)
 			str = ft_strdup(data);
 		else
 			str = join_leak(str, data);
-		ft_bzero(data, len);
+		ft_strdel(&data);
 		len = 0;
 	}
+	ft_strdel(&data);
 	if (str != NULL)
 		append(list, str, NULL, flags);
 	ft_strdel(&str);
@@ -54,20 +55,22 @@ void		append_file(t_lst **lst, char *str, t_flags *flags)
 	int		len;
 
 	add = NULL;
-	data = (char *)ft_strnew(BUFFER);
+	flags->stop = 1;
 	fd = open(str, O_RDONLY);
 	if (error_file(fd, str))
 		return ;
+	data = (char *)ft_strnew(BUFFER);
 	while ((len = read(fd, data, sizeof(data))) > 0)
 	{
 		if (add == NULL)
 			add = ft_strdup(data);
 		else
 			add = join_leak(add, data);
-		ft_bzero(data, len);
+		ft_strdel(&data);
 		len = 0;
 	}
 	close(fd);
+	free(data);
 	append(lst, add, str, flags);
 	ft_strdel(&add);
 }
@@ -75,14 +78,14 @@ void		append_file(t_lst **lst, char *str, t_flags *flags)
 int			op_only(char **av, t_flags **flags)
 {
 	int i;
-	
+
 	i = 2;
 	while (av[i])
 	{
 		if (av[i][0] == '-' && av[i][1] == 's' && !av[i + 1])
 		{
 			ft_printf("ft_ssl : -s : need an argument\n");
-			exit (1);
+			exit(1);
 		}
 		if (av[i][0] == '-' && av[i][1] == 'p')
 			(*flags)->p = 1;
@@ -103,9 +106,7 @@ int			parsing(int ac, char **av, t_ssl *ssl)
 	if (ac == 2 || op_only(av, &flags))
 		parsing_stdin(&ssl->lst, flags);
 	else
-	{
 		parse_flags(flags, &ssl->lst, av);
-		print_infos(ssl);
-	}
+	free(flags);
 	return (0);
 }

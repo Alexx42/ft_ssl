@@ -6,7 +6,7 @@
 /*   By: Alex <Alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:52:12 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/05 19:43:48 by Alex             ###   ########.fr       */
+/*   Updated: 2019/04/09 13:09:12 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	free_list(t_lst *head)
 	{
 		tmp = head;
 		head = head->next;
+		if (tmp->flags)
+			free(tmp->flags);
 		if (tmp->content)
 			free(tmp->content);
 		if (tmp->name_file)
@@ -29,7 +31,6 @@ void	free_list(t_lst *head)
 		free(tmp);
 	}
 }
-
 
 int		ft_ssl(char **av, int ac)
 {

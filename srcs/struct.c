@@ -46,8 +46,7 @@ void		append(t_lst **head, char *content, char *file_name, t_flags *flags)
 	t_lst		*last;
 
 	last = (*head);
-	new_node = (t_lst*)malloc(sizeof(t_lst));
-	if (new_node == NULL)
+	if ((new_node = (t_lst*)malloc(sizeof(t_lst))) == NULL)
 		return ;
 	new_node->content = ft_strdup(content);
 	new_node->next = NULL;
@@ -93,33 +92,4 @@ t_md5		*init_md5(int len)
 	md5->message = (unsigned char *)ft_strnew(len + 64);
 	md5->len_message = 0;
 	return (md5);
-}
-
-
-void		print_infos(t_ssl *ssl)
-{
-	t_lst	*lst;
-
-	lst = ssl->lst;
-	printf("INFOS SSL\n");
-	if (ssl->type == 1)
-		printf("TYPE = MD5\n");
-	else
-		printf("TYPE = SHA256\n");
-	while (lst)
-	{
-		printf("CONTENT = %s\n", lst->content);
-		printf("IS_STRING = %d\n", lst->is_string);
-		print_flags(lst->flags);
-		lst = lst->next;
-	}
-}
-
-void		print_flags(t_flags *flags)
-{
-	printf("R = %d\n", flags->r);
-	printf("P = %d\n", flags->p);
-	printf("Q = %d\n", flags->q);
-	printf("S = %d\n", flags->s);
-
 }

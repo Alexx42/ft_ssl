@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Alex <Alex@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:52:29 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/08 17:06:30 by Alex             ###   ########.fr       */
+/*   Updated: 2019/04/12 10:41:39 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,9 @@ int			parsing_stdin(t_lst **list, t_flags *flags)
 			str = ft_strdup(data);
 		else
 			str = join_leak(str, data);
+		ft_bzero(data, BUFFER);
 		ft_strdel(&data);
+		data = (char *)ft_strnew(BUFFER);
 		len = 0;
 	}
 	ft_strdel(&data);
@@ -55,7 +57,6 @@ void		append_file(t_lst **lst, char *str, t_flags *flags)
 	int		len;
 
 	add = NULL;
-	flags->stop = 1;
 	fd = open(str, O_RDONLY);
 	if (error_file(fd, str))
 		return ;
@@ -66,7 +67,9 @@ void		append_file(t_lst **lst, char *str, t_flags *flags)
 			add = ft_strdup(data);
 		else
 			add = join_leak(add, data);
+		ft_bzero(data, BUFFER);
 		ft_strdel(&data);
+		data = (char *)ft_strnew(BUFFER);
 		len = 0;
 	}
 	close(fd);
@@ -79,7 +82,7 @@ int			op_only(char **av, t_flags **flags)
 {
 	int i;
 
-	i = 2;
+	i = 1;
 	while (av[i])
 	{
 		if (av[i][0] == '-' && av[i][1] == 's' && !av[i + 1])
@@ -98,10 +101,8 @@ int			op_only(char **av, t_flags **flags)
 
 int			parsing(int ac, char **av, t_ssl *ssl)
 {
-	int		i;
 	t_flags *flags;
 
-	i = 1;
 	flags = init_flags();
 	if (ac == 2 || op_only(av, &flags))
 		parsing_stdin(&ssl->lst, flags);

@@ -6,7 +6,7 @@
 /*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:52:21 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/05 11:58:29 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/11 20:22:57 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@ int			verify_cmd(t_ssl *ssl, char *cmd)
 	else if (!ft_strcmp(cmd, "sha256"))
 	{
 		ssl->type = 1;
+		return (0);
+	}
+	else if (!ft_strcmp(cmd, "sha512"))
+	{
+		ssl->type = 2;
 		return (0);
 	}
 	return (1);

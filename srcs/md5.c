@@ -6,7 +6,7 @@
 /*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:52:35 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/05 21:18:58 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/12 10:38:11 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ int32_t g_k[64] = {
 
 uint32_t g_w[16] = {0};
 
+uint32_t g_h[4] = {0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476};
+
 /*
 **  PREPARATION OF THE MESSAGE
 */
@@ -86,10 +88,10 @@ size_t			padding(t_md5 **md5, char *content, int len_content)
 
 void			init_hash(t_hash *hash)
 {
-	hash->a = hash->h0;
-	hash->b = hash->h1;
-	hash->c = hash->h2;
-	hash->d = hash->h3;
+	hash->a = g_h[0];
+	hash->b = g_h[1];
+	hash->c = g_h[2];
+	hash->d = g_h[3];
 }
 
 void			main_loop(t_hash **hash, uint32_t *w, int i)
@@ -128,10 +130,10 @@ void			cut_blocks(t_md5 *md5, t_hash **hash, int new_len)
 	int				i;
 
 	offset = 0;
-	(*hash)->h0 = 0x67452301;
-	(*hash)->h1 = 0xEFCDAB89;
-	(*hash)->h2 = 0x98BADCFE;
-	(*hash)->h3 = 0x10325476;
+	g_h[0] = 0x67452301;
+	g_h[1] = 0xEFCDAB89;
+	g_h[2] = 0x98BADCFE;
+	g_h[3] = 0x10325476;
 	while (offset < new_len)
 	{
 		w = (uint32_t*)(md5->message + offset);
@@ -139,10 +141,10 @@ void			cut_blocks(t_md5 *md5, t_hash **hash, int new_len)
 		i = -1;
 		while (++i < 64)
 			main_loop(hash, w, i);
-		(*hash)->h0 += (*hash)->a;
-		(*hash)->h1 += (*hash)->b;
-		(*hash)->h2 += (*hash)->c;
-		(*hash)->h3 += (*hash)->d;
+		g_h[0] += (*hash)->a;
+		g_h[1] += (*hash)->b;
+		g_h[2] += (*hash)->c;
+		g_h[3] += (*hash)->d;
 		offset += 64;
 	}
 }
@@ -160,7 +162,7 @@ void			md5_hash(t_ssl *ssl)
 	{
 		new_len = padding(&md5, lst->content, lst->len);
 		cut_blocks(md5, &hash, new_len);
-		print_func(lst, hash, NULL, ssl);
+		print_func(lst, ssl);
 		free(md5->message);
 		free(md5);
 		lst = lst->next;

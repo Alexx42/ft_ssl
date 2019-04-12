@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   flags.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: Alex <Alex@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:52:49 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/09 13:24:06 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/12 10:41:36 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void			parse_flags(t_flags *flags, t_lst **lst, char **str)
 {
 	int			i;
 
-	i = 1;
+	i = 0;
 	while (str[++i])
 	{
 		if (str[i][0] == '-' && !flags->stop)
@@ -68,6 +68,7 @@ void			parse_flags(t_flags *flags, t_lst **lst, char **str)
 		else
 		{
 			append_file(lst, str[i], flags);
+			flags->stop = 1;
 		}
 	}
 }

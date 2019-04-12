@@ -6,7 +6,7 @@
 /*   By: ale-goff <ale-goff@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:52:39 by ale-goff          #+#    #+#             */
-/*   Updated: 2019/04/05 13:42:38 by ale-goff         ###   ########.fr       */
+/*   Updated: 2019/04/12 11:18:14 by ale-goff         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,11 @@ uint64_t g_ksha[64] = {
 	0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
 	0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
 	0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2};
+
+unsigned int g_h256[8] = {
+	0x6A09E667, 0xbb67ae85, 0xa54ff53a,
+	0xa54ff53a, 0x510e527f, 0x9b05688c,
+	0x1f83d9ab, 0x5be0cd19};
 
 size_t			padding_sha256(t_sha256 **sha256, char *content,
 				int len_content)
@@ -119,14 +124,14 @@ void			cut_blocks256(t_sha256 *sha256, t_hash256 **hash256, int newlen)
 		i = -1;
 		while (++i < 64)
 			main_loop256(hash256, i, w);
-		(*hash256)->h0 += (*hash256)->a;
-		(*hash256)->h1 += (*hash256)->b;
-		(*hash256)->h2 += (*hash256)->c;
-		(*hash256)->h3 += (*hash256)->d;
-		(*hash256)->h4 += (*hash256)->e;
-		(*hash256)->h5 += (*hash256)->f;
-		(*hash256)->h6 += (*hash256)->g;
-		(*hash256)->h7 += (*hash256)->h;
+		g_h256[0] += (*hash256)->a;
+		g_h256[1] += (*hash256)->b;
+		g_h256[2] += (*hash256)->c;
+		g_h256[3] += (*hash256)->d;
+		g_h256[4] += (*hash256)->e;
+		g_h256[5] += (*hash256)->f;
+		g_h256[6] += (*hash256)->g;
+		g_h256[7] += (*hash256)->h;
 		offset += 64;
 	}
 	free(w);
@@ -144,16 +149,16 @@ void			sha256_hash(t_ssl *ssl)
 	while (lst)
 	{
 		newlen = padding_sha256(&sha256, lst->content, lst->len);
-		(hash256)->h0 = 0x6A09E667;
-		(hash256)->h1 = 0xbb67ae85;
-		(hash256)->h2 = 0x3c6ef372;
-		(hash256)->h3 = 0xa54ff53a;
-		(hash256)->h4 = 0x510e527f;
-		(hash256)->h5 = 0x9b05688c;
-		(hash256)->h6 = 0x1f83d9ab;
-		(hash256)->h7 = 0x5be0cd19;
+		g_h256[0] = 0x6A09E667;
+		g_h256[1] = 0xbb67ae85;
+		g_h256[2] = 0x3c6ef372;
+		g_h256[3] = 0xa54ff53a;
+		g_h256[4] = 0x510e527f;
+		g_h256[5] = 0x9b05688c;
+		g_h256[6] = 0x1f83d9ab;
+		g_h256[7] = 0x5be0cd19;
 		cut_blocks256(sha256, &hash256, newlen);
-		print_func(lst, NULL, hash256, ssl);
+		print_func(lst, ssl);
 		free(sha256->message);
 		free(sha256);
 		lst = lst->next;
